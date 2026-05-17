@@ -9,7 +9,7 @@ _COLORS = {"normal": "#2ECC71", "abnormal": "#F39C12", "critical": "#E74C3C"}
 
 
 def render_trend_chart(
-    patient_obs: pd.DataFrame, gender: str, loinc: str
+    patient_obs: pd.DataFrame, gender: str, loinc: str, chart_key: str | None = None
 ) -> None:
     """Render a single Plotly trend chart for one LOINC code."""
     name = LOINC_NAMES.get(loinc, loinc)
@@ -83,4 +83,4 @@ def render_trend_chart(
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=chart_key or f"trend_{loinc}")

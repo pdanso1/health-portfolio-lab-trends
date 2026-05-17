@@ -70,7 +70,7 @@ def main():
                 if loinc not in patient_obs["CODE"].values:
                     continue
 
-                render_trend_chart(patient_obs, gender, loinc)
+                render_trend_chart(patient_obs, gender, loinc, chart_key=f"{panel_name}_{loinc}")
 
                 flags = compute_delta_flags(patient_obs, loinc)
                 for flag in flags:
