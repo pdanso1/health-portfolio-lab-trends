@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 
-def _compute_age(birthdate: pd.Timestamp) -> int:
+def compute_age(birthdate: pd.Timestamp) -> int:
     today = date.today()
     return (
         today.year
@@ -20,7 +20,7 @@ def render_patient_search(
 
     available = set(obs["PATIENT"].unique())
     pat = patients[patients["PATIENT"].isin(available)].copy()
-    pat["_age"] = pat["BIRTHDATE"].apply(_compute_age)
+    pat["_age"] = pat["BIRTHDATE"].apply(compute_age)
     pat["_label"] = pat.apply(
         lambda r: f"{r['FIRST']} {r['LAST']} — age {r['_age']}, {r['GENDER']}", axis=1
     )
@@ -55,7 +55,7 @@ def render_patient_card(
     conditions: pd.DataFrame,
 ) -> None:
     """Display the patient summary card below the title."""
-    age = _compute_age(patient_row["BIRTHDATE"])
+    age = compute_age(patient_row["BIRTHDATE"])
     gender_label = "Male" if patient_row["GENDER"] == "M" else "Female"
     name = f"{patient_row['FIRST']} {patient_row['LAST']}"
 

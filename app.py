@@ -1,8 +1,7 @@
-from datetime import date
 import streamlit as st
 
 from data.loader import load_observations, load_patients, load_conditions
-from modules.patient_search import render_patient_search, render_patient_card
+from modules.patient_search import render_patient_search, render_patient_card, compute_age
 from modules.trend_view import render_trend_chart
 from modules.delta_check import compute_delta_flags
 from modules.critical_values import check_critical
@@ -10,15 +9,6 @@ from modules.narrative import generate_narrative
 from config.lab_config import LOINC_PANELS, LOINC_NAMES
 
 DEMO_PATIENT_ID = "f9ed1c66-904c-3c3f-0a50-0226629df9ff"
-
-
-def _compute_age(birthdate) -> int:
-    today = date.today()
-    return (
-        today.year
-        - birthdate.year
-        - ((today.month, today.day) < (birthdate.month, birthdate.day))
-    )
 
 
 def _render_critical_banner(patient_obs, gender: str) -> None:
@@ -106,7 +96,7 @@ def main():
                 ]["DESCRIPTION"].tolist()
                 st.session_state.narrative = generate_narrative(
                     patient_obs,
-                    age=_compute_age(patient_row["BIRTHDATE"]),
+                    age=compute_age(patient_row["BIRTHDATE"]),
                     gender_label="male" if gender == "M" else "female",
                     active_conditions=active_cond,
                 )
