@@ -81,6 +81,7 @@ def render_trend_chart(
         height=280,
         margin=dict(l=50, r=20, t=40, b=30),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        xaxis=dict(tickformat="%b %d, %Y"),
     )
 
     st.plotly_chart(fig, use_container_width=True, key=chart_key or f"trend_{loinc}")

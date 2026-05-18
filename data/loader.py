@@ -13,7 +13,7 @@ ALL_LAB_LOINCS = list({code for codes in LOINC_PANELS.values() for code in codes
 def load_observations() -> pd.DataFrame:
     obs = pd.read_csv(SYNTHEA / "observations.csv", low_memory=False)
     obs = obs[(obs["CODE"].isin(ALL_LAB_LOINCS)) & (obs["TYPE"] == "numeric")].copy()
-    obs["DATE"] = pd.to_datetime(obs["DATE"], utc=True).dt.tz_localize(None).dt.normalize()
+    obs["DATE"] = pd.to_datetime(obs["DATE"]).dt.floor("D")
     obs["VALUE"] = pd.to_numeric(obs["VALUE"], errors="coerce")
     return obs.dropna(subset=["VALUE"])
 
