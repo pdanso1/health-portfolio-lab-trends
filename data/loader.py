@@ -3,7 +3,9 @@ import streamlit as st
 from pathlib import Path
 from config.lab_config import LOINC_PANELS
 
-SYNTHEA = Path.home() / "synthea_data" / "csv" / "csv"
+_LOCAL = Path.home() / "synthea_data" / "csv" / "csv"
+_SAMPLE = Path(__file__).parent / "sample"
+SYNTHEA = _LOCAL if _LOCAL.exists() else _SAMPLE
 ALL_LAB_LOINCS = list({code for codes in LOINC_PANELS.values() for code in codes})
 
 
