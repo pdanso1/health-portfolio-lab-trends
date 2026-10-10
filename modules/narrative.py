@@ -54,8 +54,12 @@ Write a structured clinical narrative (4-6 sentences) that:
 Write for a clinical audience. Use medical terminology appropriately. Do not include disclaimers about being an AI."""
 
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=512,
+        model="claude-haiku-5-5",
+        # Haiku 5.5 thinks by default and thinking counts toward max_tokens.
+        max_tokens=4000,
+        output_config={"effort": "low"},
         messages=[{"role": "user", "content": prompt}],
     )
-    return response.content[0].text
+    if response.stop_reason != "end_turn":
+        raise RuntimeError(f"narrative not completed: stop_reason={response.stop_reason}")
+    return "".join(b.text for b in response.content if b.type == "text")
